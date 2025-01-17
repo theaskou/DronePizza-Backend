@@ -22,7 +22,6 @@ public class DeliveryController {
         return deliveryService.getUndeliveredOrders();
     }
 
-    // TODO: Add address
     @PostMapping("/deliveries/add")
     public Delivery addDelivery(@RequestBody Delivery delivery){
         return deliveryService.addDelivery(delivery);
@@ -33,13 +32,11 @@ public class DeliveryController {
         return deliveryService.getQueuedDeliveries();
     }
 
-    // TODO: Bedre fejlhåndtering
     @PostMapping("/deliveries/schedule/{id}")
     public ResponseEntity<Delivery> updateDelivery(@PathVariable String id) {
         return deliveryService.updateDelivery(id);
     }
 
-    // TODO: Bedre fejlhåndtering
     @PostMapping("/deliveries/finish/{id}")
     public ResponseEntity<Delivery> finishDelivery(@PathVariable String id) {
         return deliveryService.finishDelivery(id);

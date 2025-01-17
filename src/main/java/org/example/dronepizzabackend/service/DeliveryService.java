@@ -58,7 +58,6 @@ public class DeliveryService {
         return queuedDeliveries;
     }
 
-    // TODO: Fjern Ddeliveries med actual delivery fra listen
     public Drone droneWithFewestDeliveries() {
         List<Drone> drones = droneRepository.findAll();
         drones.removeIf(drone -> drone.getOperationalStatus() == OperationalStatus.RETIRED);

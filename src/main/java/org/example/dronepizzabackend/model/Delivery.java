@@ -27,7 +27,6 @@ public class Delivery {
         this.pizza = pizza;
     }
 
-    // Tom constructor til init Data TODO: Refaktorer
     public Delivery() {
     }
 
