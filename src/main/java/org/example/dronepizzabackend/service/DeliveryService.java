@@ -7,6 +7,7 @@ import org.example.dronepizzabackend.model.Pizza;
 import org.example.dronepizzabackend.repositories.DeliveryRepository;
 import org.example.dronepizzabackend.repositories.DroneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class DeliveryService {
 
     public List<Delivery> getUndeliveredOrders() {
         List<Delivery> undeliveredOrders = new ArrayList<>();
-        List<Delivery> allDeliveries = deliveryRepository.findAll();
+        List<Delivery> allDeliveries = deliveryRepository.findAll(Sort.by(Sort.Direction.ASC, "expectedDeliveryTime"));
         for (Delivery delivery : allDeliveries) {
             if (delivery.getActualDeliveryTime() == null) {
                 undeliveredOrders.add(delivery);
@@ -39,9 +40,7 @@ public class DeliveryService {
         return LocalTime.now().plusMinutes(30);
     }
 
-    public Delivery addDelivery(Pizza pizza) {
-        Delivery delivery = new Delivery();
-        delivery.setPizza(pizza);
+    public Delivery addDelivery(Delivery delivery) {
         delivery.setExpectedDeliveryTime(setNewDeliveryTime());
         deliveryRepository.save(delivery);
         System.out.println(delivery);
@@ -73,14 +72,15 @@ public class DeliveryService {
         return droneWithFewestDeliveries;
     }
 
-    public Delivery updateDelivery(String id) throws Exception {
+    public ResponseEntity<Delivery> updateDelivery(String id) {
         Delivery delivery = deliveryRepository.findById(Integer.parseInt(id)).get();
         if (delivery.getDrone() == null) {
             delivery.setDrone(droneWithFewestDeliveries());
         } else {
-            throw new Exception("Delivery is already in progress");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return deliveryRepository.save(delivery);
+        deliveryRepository.save(delivery);
+        return new ResponseEntity<>(delivery, HttpStatus.OK);
     }
 
     public ResponseEntity<Delivery> finishDelivery(String deliveryId) {

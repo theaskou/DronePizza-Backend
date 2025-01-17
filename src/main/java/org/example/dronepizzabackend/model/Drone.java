@@ -25,14 +25,9 @@ public class Drone {
     @JoinColumn(name = "stationIDfk", referencedColumnName = "stationID")
     private Station station;
 
-    public Drone(Station station) {
-        this.serialUUID = UUID.randomUUID();
-        this.station = station;
-    }
-
-    // Mock data constructor TODO: Ret mockdata
     public Drone() {
         this.serialUUID = UUID.randomUUID();
+        this.operationalStatus = OperationalStatus.INACTIVE;
     }
 
     public int getDroneID() {

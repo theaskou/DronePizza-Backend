@@ -49,7 +49,8 @@ public class DroneService {
             }
         }
         drone.setStation(stationRepository.findById(stationIDWithFewestDrones).get());
-        return droneRepository.save(drone);
+        droneRepository.save(drone);
+        return drone;
     }
 
     public ResponseEntity<Drone> enableDrone(Drone drone) {

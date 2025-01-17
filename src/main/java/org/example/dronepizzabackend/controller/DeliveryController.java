@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@CrossOrigin
 public class DeliveryController {
 
     @Autowired
@@ -24,8 +24,8 @@ public class DeliveryController {
 
     // TODO: Add address
     @PostMapping("/deliveries/add")
-    public Delivery addDelivery(@RequestBody Pizza pizza){
-        return deliveryService.addDelivery(pizza);
+    public Delivery addDelivery(@RequestBody Delivery delivery){
+        return deliveryService.addDelivery(delivery);
     }
 
     @GetMapping("/deliveries/queue")
@@ -35,14 +35,13 @@ public class DeliveryController {
 
     // TODO: Bedre fejlhåndtering
     @PostMapping("/deliveries/schedule/{id}")
-    public Delivery updateDelivery(@PathVariable String id) throws Exception {
+    public ResponseEntity<Delivery> updateDelivery(@PathVariable String id) {
         return deliveryService.updateDelivery(id);
     }
 
-    // TODO: deliveries/finish skal tage en givet levering, der er i gang, og markere den som færdig i
-    //  det øjeblik som endpoint'et kontaktes. Hvis leveringen ikke har en Drone, skal den fejle.
+    // TODO: Bedre fejlhåndtering
     @PostMapping("/deliveries/finish/{id}")
-    public ResponseEntity<Delivery> finishDelivery(@PathVariable String id) throws Exception {
+    public ResponseEntity<Delivery> finishDelivery(@PathVariable String id) {
         return deliveryService.finishDelivery(id);
     }
 
